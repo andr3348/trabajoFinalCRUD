@@ -1,23 +1,13 @@
 <?php
 class DB
 {
-    private string $host;
-    private int $port;
-    private string $user;
-    private string $password;
-    private string $database;
-    private ?PDO $pdo;
-
-    public function __construct()
-    {
-        $this->host = "localhost";
-        $this->port = "5432";
-        $this->user = "postges";
-        $this->password = "123";
-        $this->database = "MascaFierroAQP";
-    }
-
-    public function conectar(): ?PDO
+    private $host = "localhost";
+    private $port = "5432";
+    private $user = "postges";
+    private $password = "123";
+    private $database = "MascaFierroAQP";
+    private PDO $pdo;
+    public function conectar()
     {
         try {
 

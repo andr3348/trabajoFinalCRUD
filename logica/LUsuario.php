@@ -1,13 +1,13 @@
 <?php
 require_once '../interfaces/IUsuario.php';
 require_once '../model/Usuario.php';
-require_once '../conexion/BD.php';
+require_once '../conexion/DB.php';
 
 class LUsuario implements IUsuario {
     private $pdo;
 
     public function __construct() {
-        $db = new BD();
+        $db = new DB();
         $this->pdo = $db->conectar();
     }
 
@@ -39,7 +39,7 @@ class LUsuario implements IUsuario {
                 $usuario->setNombre($row['nombre']);
                 $usuario->setDni($row['dni']);
                 $usuario->setCorreo($row['correo']);
-                $usuario->setPassword($row['password']);
+                $usuario->setPassword($row['pass']);
                 $usuario->setTipousuario($row['tipousuario']);
             }
         } catch (PDOException $e) {
@@ -50,7 +50,7 @@ class LUsuario implements IUsuario {
 
     public function crearUsuario(Usuario $usuario){
         try {
-            $sql = "INSERT INTO usuario (nombre, dni, correo, password, tipousuario) VALUES (:nombre,: dni, :correo, :passw, :tipo)";
+            $sql = "INSERT INTO usuario (nombre, dni, correo, pass, tipousuario) VALUES (:nombre, :dni, :correo, :passw, :tipo)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 ':nombre' => $usuario->getNombre(),
@@ -66,7 +66,7 @@ class LUsuario implements IUsuario {
 
     public function modificarUsuario(Usuario $usuario){
         try {
-            $sql = "UPDATE usuario SET  nombre = :nombre, dni = :dni, correo = :correo, password = :passw, tipousuario = :tipo WHERE id = :id";
+            $sql = "UPDATE usuario SET  nombre = :nombre, dni = :dni, correo = :correo, pass = :passw, tipousuario = :tipo WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 ':nombre' => $usuario->getNombre(),
