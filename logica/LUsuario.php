@@ -1,22 +1,25 @@
 <?php
-require_once '../interfaces/IUsuario.php';
+require_once '../interafces/IUsuario.php';
 require_once '../model/Usuario.php';
-require_once '../conexion/DB.php';
+require_once '../conexion/BD.php';
 
-class LUsuario implements IUsuario {
+class LUsuario implements IUsuario
+{
     private $pdo;
 
-    public function __construct() {
+    public function __construct()
+    {
         $db = new DB();
         $this->pdo = $db->conectar();
     }
 
-    public function obtenerUsuarios(){
+    public function obtenerUsuarios()
+    {
         try {
             $sql = "SELECT * FROM usuario";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
-            
+
             $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $usuarios;
         } catch (PDOException $e) {
@@ -24,14 +27,15 @@ class LUsuario implements IUsuario {
         }
     }
 
-    public function obtenerUsuariosPorId($id){
+    public function obtenerUsuariosPorId($id)
+    {
         try {
             $sql = "SELECT * FROM usuario WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 ':id' => $id
             ]);
-            
+
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($row) {
                 $usuario = new Usuario();
@@ -45,10 +49,10 @@ class LUsuario implements IUsuario {
         } catch (PDOException $e) {
             throw new Exception("Error al obtener el usuario: " . $e->getMessage());
         }
-
     }
 
-    public function crearUsuario(Usuario $usuario){
+    public function crearUsuario(Usuario $usuario)
+    {
         try {
             $sql = "INSERT INTO usuario (nombre, dni, correo, pass, tipousuario) VALUES (:nombre, :dni, :correo, :passw, :tipo)";
             $stmt = $this->pdo->prepare($sql);
@@ -64,7 +68,8 @@ class LUsuario implements IUsuario {
         }
     }
 
-    public function modificarUsuario(Usuario $usuario){
+    public function modificarUsuario(Usuario $usuario)
+    {
         try {
             $sql = "UPDATE usuario SET  nombre = :nombre, dni = :dni, correo = :correo, pass = :passw, tipousuario = :tipo WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
@@ -81,7 +86,8 @@ class LUsuario implements IUsuario {
         }
     }
 
-    public function eliminarUsuario(Usuario $usuario){
+    public function eliminarUsuario(Usuario $usuario)
+    {
         try {
             $sql = "DELETE FROM usuario WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
@@ -93,5 +99,3 @@ class LUsuario implements IUsuario {
         }
     }
 }
-
-?>

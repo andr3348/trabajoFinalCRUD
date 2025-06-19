@@ -1,9 +1,9 @@
 <?php
 class DB
 {
-    private $host = "localhost";
+    private $host = "10.0.221.105";
     private $port = "5432";
-    private $user = "postges";
+    private $user = "postgres";
     private $password = "123";
     private $database = "MascaFierroAQP";
     private PDO $pdo;
