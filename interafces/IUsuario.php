@@ -1,7 +1,7 @@
 <?php
 require_once '../model/Usuario.php';
 
-class IUsuario {
+interface IUsuario {
     public function obtenerUsuarios();
     public function obtenerUsuariosPorId($id);
     public function crearUsuario(Usuario $usuario);

@@ -1,11 +1,11 @@
 <?php
     class Usuario {
-        private idusuario;
-        private nombre;
-        private dni;
-        private correo;
-        private password;
-        private tipousuario;
+        private $idusuario;
+        private $nombre;
+        private $dni;
+        private $correo;
+        private $password;
+        private $tipousuario;
         
         public function getIdusuario(){return $this->idusuario;}
         public function setIdusuario($idusuario){$this ->idusuario = $idusuario;}

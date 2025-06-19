@@ -1,13 +1,13 @@
 <?php
 require_once '../interfaces/IUsuario.php';
 require_once '../model/Usuario.php';
-require_once '../conexion/DB.php';
+require_once '../conexion/BD.php';
 
 class LUsuario implements IUsuario {
     private $pdo;
 
     public function __construct() {
-        $db = new DB();
+        $db = new BD();
         $this->pdo = $db->conectar();
     }
 
@@ -35,45 +35,51 @@ class LUsuario implements IUsuario {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($row) {
                 $usuario = new Usuario();
-                $usuario->setIdUsuario($row['id']);
-                $usuario->setNombre($row['id']);
-                $usuario->setCorreo($row['id']);
-                $usuario->setPassword($row['id']);
+                $usuario->setIdusuario($row['id']);
+                $usuario->setNombre($row['nombre']);
+                $usuario->setDni($row['dni']);
+                $usuario->setCorreo($row['correo']);
+                $usuario->setPassword($row['password']);
+                $usuario->setTipousuario($row['tipousuario']);
             }
         } catch (PDOException $e) {
             throw new Exception("Error al obtener el usuario: " . $e->getMessage());
         }
 
-    };
+    }
 
     public function crearUsuario(Usuario $usuario){
         try {
-            $sql = "INSERT INTO usuario (nombre, correo, password) VALUES (:nombre, :correo, :passw)";
+            $sql = "INSERT INTO usuario (nombre, dni, correo, password, tipousuario) VALUES (:nombre,: dni, :correo, :passw, :tipo)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 ':nombre' => $usuario->getNombre(),
+                ':dni' => $usuario->getDni(),
                 ':correo' => $usuario->getCorreo(),
-                ':passw' => $usuario->getPassword()
+                ':passw' => $usuario->getPassword(),
+                ':tipo' => $usuario->getTipousuario()
             ]);
         } catch (PDOException $e) {
             throw new Exception("Error al crear el nuevo usuario: " . $e->getMessage());
         }
-    };
+    }
 
     public function modificarUsuario(Usuario $usuario){
         try {
-            $sql = "UPDATE usuario SET  nombre = :nombre, correo = :correo, password = :passw WHERE id = :id";
+            $sql = "UPDATE usuario SET  nombre = :nombre, dni = :dni, correo = :correo, password = :passw, tipousuario = :tipo WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 ':nombre' => $usuario->getNombre(),
+                ':dni' => $usuario->getDni(),
                 ':correo' => $usuario->getCorreo(),
                 ':passw' => $usuario->getPassword(),
+                ':tipo' => $usuario->getTipousuario(),
                 ':id' => $usuario->getIdUsuario()
             ]);
         } catch (PDOException $e) {
             throw new Exception("Error al obtener los usuarios: " . $e->getMessage());
         }
-    };
+    }
 
     public function eliminarUsuario(Usuario $usuario){
         try {
@@ -85,7 +91,7 @@ class LUsuario implements IUsuario {
         } catch (PDOException $e) {
             throw new Exception("Error al eliminar el usuario: " . $e->getMessage());
         }
-    };
+    }
 }
 
 ?>
